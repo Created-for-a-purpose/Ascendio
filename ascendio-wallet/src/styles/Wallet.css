@@ -1,0 +1,64 @@
+.username {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-top: 3rem;
+    color: white;
+    font-family: cursive;
+}
+
+.username button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 10px;
+}
+
+.username button:focus {
+    outline: none;
+}
+
+.username button img {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    margin-left: 5px;
+}
+
+.balance {
+    font-size: 16px;
+    color: white;
+    font-family: cursive;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.balance h1 {
+    margin: 0;
+    margin-bottom: 2rem;
+}
+
+.button {
+    width: 70%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+    font-family: cursive;
+    font-weight: bold;
+}
+
+.button:last-child {
+    margin-bottom: 0;
+}
+
+.button:hover {
+    color: #010100;
+    background-color: #98f49d;
+}

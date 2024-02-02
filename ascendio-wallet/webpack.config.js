@@ -1,6 +1,7 @@
 const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin")
+const webpackConfig = require("webpack")
 
 module.exports = {
     entry: {
@@ -31,7 +32,7 @@ module.exports = {
                     "style-loader",
                     "css-loader"
                 ]
-            },
+            }
         ],
     },
     plugins: [
@@ -41,10 +42,15 @@ module.exports = {
                 { from: "icon.png", to: "../icon.png" },
             ],
         }),
+        new webpackConfig.ProvidePlugin({ Buffer: ["buffer", "Buffer"] }),
         ...getHtmlPlugins(["index"]),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
+        fallback: {
+            crypto: require.resolve("crypto-browserify"),
+            stream: require.resolve("stream-browserify")
+        }
     },
     output: {
         path: path.join(__dirname, "dist/js"),

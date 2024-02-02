@@ -48,21 +48,21 @@
 
 .create-form {
     max-width: 400px;
-    margin: 3rem auto;
+    margin: 2rem auto;
     padding: 20px;
     border-radius: 5px;
     color: white;
 }
 
 .form-header {
-    font-size: 24px;
-    margin-bottom: 40px;
+    font-size: 17px;
+    margin-bottom: 30px;
     text-align: center;
     font-family: cursive;
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
@@ -100,4 +100,26 @@
 .create-button:hover {
     color: #010100;
     background-color: #98f49d;
+}
+
+.created {
+    color: white;
+    font-family: cursive;
+    margin: 7rem auto;
+    text-align: center;
+}
+
+.created h1 {
+    margin: 1rem auto;
+}
+
+.created a {
+    text-decoration: none;
+    color: cyan;
+    font-weight: bold;
+}
+
+.created-link {
+    margin-top: 2rem;
+    font-size: medium;
 }
