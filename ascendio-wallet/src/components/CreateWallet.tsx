@@ -4,6 +4,7 @@ import Wallet from './Wallet';
 const horse = "https://static.displate.com/1200x857/displate/2021-05-19/5b04b27618cb89016642bf525ef89f5f_fbe0de8b9a372a20f0116b5f95905c8a.jpg"
 import { getWalletApi, setContractAddress } from '../AppState';
 import { updateContractState } from '../PaymasterExecution';
+import { generateRecovery } from './Recovery';
 
 function CreateWallet() {
     const [createForm, setCreateForm] = useState(false);
@@ -47,6 +48,11 @@ function CreateWallet() {
         setImportForm(false);
         setRecoveryForm(false);
         setCreated(true);
+    }
+
+    const handleForgotPassword = () => {
+        generateRecovery(username, "noah20272@gmail.com");
+        setRecoveryForm(true)
     }
 
     return (
@@ -104,13 +110,13 @@ function CreateWallet() {
                     <form onSubmit={(e) => importWallet(e)}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
-                            <input type="text" id="username" />
+                            <input type="text" id="username" onChange={(e) => setUsername(e.target.value)} />
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input type="password" id="password" />
                         </div>
-                        <label onClick={() => setRecoveryForm(true)} id='forgot'>Forgot password?</label>
+                        <label onClick={handleForgotPassword} id='forgot'>Forgot password?</label>
                         <button type="submit" className="create-button">Import</button>
                     </form>
                 </div>) : (

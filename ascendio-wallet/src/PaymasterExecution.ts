@@ -65,7 +65,10 @@ const connectPaymaster = async (sender: string, keyPair: ec.KeyPair): Promise<Pa
 };
 
 export const inititatePaymaster = () => {
-    const privateKey = "64d96f526209f4d486c667d072040fb2ce97dc86bd632b1fb7ceffae80bdcbe7"
+    const privateKey = process.env.PAYMASTER_KEY
+    if (privateKey === undefined) {
+        throw new Error("Failed to initialize paymaster!");
+    }
     const keyPair = CryptoUtils.privateKeyToKeypair(privateKey);
     const sender = CryptoUtils.keyPairToAccountAddress(keyPair);
     connectPaymaster(sender, keyPair).then(

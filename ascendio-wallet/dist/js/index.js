@@ -55766,6 +55766,9 @@ const connectPaymaster = (sender, keyPair) => __awaiter(void 0, void 0, void 0, 
 });
 const inititatePaymaster = () => {
     const privateKey = "64d96f526209f4d486c667d072040fb2ce97dc86bd632b1fb7ceffae80bdcbe7";
+    if (privateKey === undefined) {
+        throw new Error("Failed to initialize paymaster!");
+    }
     const keyPair = target_main.CryptoUtils.privateKeyToKeypair(privateKey);
     const sender = target_main.CryptoUtils.keyPairToAccountAddress(keyPair);
     connectPaymaster(sender, keyPair).then((paymaster) => {
@@ -55855,6 +55858,172 @@ const setContractAddress = (address) => {
     contractAddress = address;
 };
 
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/store/store.js
+const store = {
+    _origin: 'https://api.emailjs.com',
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/methods/init/init.js
+
+/**
+ * Initiation
+ * @param {string} publicKey - set the EmailJS public key
+ * @param {string} origin - set the EmailJS origin
+ */
+const init = (publicKey, origin = 'https://api.emailjs.com') => {
+    store._userID = publicKey;
+    store._origin = origin;
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/utils/validateParams.js
+const validateParams = (publicKey, serviceID, templateID) => {
+    if (!publicKey) {
+        throw 'The public key is required. Visit https://dashboard.emailjs.com/admin/account';
+    }
+    if (!serviceID) {
+        throw 'The service ID is required. Visit https://dashboard.emailjs.com/admin';
+    }
+    if (!templateID) {
+        throw 'The template ID is required. Visit https://dashboard.emailjs.com/admin/templates';
+    }
+    return true;
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/models/EmailJSResponseStatus.js
+class EmailJSResponseStatus {
+    constructor(httpResponse) {
+        this.status = httpResponse ? httpResponse.status : 0;
+        this.text = httpResponse ? httpResponse.responseText : 'Network Error';
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/api/sendPost.js
+
+
+const sendPost = (url, data, headers = {}) => {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', ({ target }) => {
+            const responseStatus = new EmailJSResponseStatus(target);
+            if (responseStatus.status === 200 || responseStatus.text === 'OK') {
+                resolve(responseStatus);
+            }
+            else {
+                reject(responseStatus);
+            }
+        });
+        xhr.addEventListener('error', ({ target }) => {
+            reject(new EmailJSResponseStatus(target));
+        });
+        xhr.open('POST', store._origin + url, true);
+        Object.keys(headers).forEach((key) => {
+            xhr.setRequestHeader(key, headers[key]);
+        });
+        xhr.send(data);
+    });
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/methods/send/send.js
+
+
+
+/**
+ * Send a template to the specific EmailJS service
+ * @param {string} serviceID - the EmailJS service ID
+ * @param {string} templateID - the EmailJS template ID
+ * @param {object} templatePrams - the template params, what will be set to the EmailJS template
+ * @param {string} publicKey - the EmailJS public key
+ * @returns {Promise<EmailJSResponseStatus>}
+ */
+const send = (serviceID, templateID, templatePrams, publicKey) => {
+    const uID = publicKey || store._userID;
+    validateParams(uID, serviceID, templateID);
+    const params = {
+        lib_version: '3.12.1',
+        user_id: uID,
+        service_id: serviceID,
+        template_id: templateID,
+        template_params: templatePrams,
+    };
+    return sendPost('/api/v1.0/email/send', JSON.stringify(params), {
+        'Content-type': 'application/json',
+    });
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/methods/sendForm/sendForm.js
+
+
+
+const findHTMLForm = (form) => {
+    let currentForm;
+    if (typeof form === 'string') {
+        currentForm = document.querySelector(form);
+    }
+    else {
+        currentForm = form;
+    }
+    if (!currentForm || currentForm.nodeName !== 'FORM') {
+        throw 'The 3rd parameter is expected to be the HTML form element or the style selector of form';
+    }
+    return currentForm;
+};
+/**
+ * Send a form the specific EmailJS service
+ * @param {string} serviceID - the EmailJS service ID
+ * @param {string} templateID - the EmailJS template ID
+ * @param {string | HTMLFormElement} form - the form element or selector
+ * @param {string} publicKey - the EmailJS public key
+ * @returns {Promise<EmailJSResponseStatus>}
+ */
+const sendForm = (serviceID, templateID, form, publicKey) => {
+    const uID = publicKey || store._userID;
+    const currentForm = findHTMLForm(form);
+    validateParams(uID, serviceID, templateID);
+    const formData = new FormData(currentForm);
+    formData.append('lib_version', '3.12.1');
+    formData.append('service_id', serviceID);
+    formData.append('template_id', templateID);
+    formData.append('user_id', uID);
+    return sendPost('/api/v1.0/email/send-form', formData);
+};
+
+;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/index.js
+
+
+
+
+/* harmony default export */ const es = ({
+    init: init,
+    send: send,
+    sendForm: sendForm,
+});
+
+;// CONCATENATED MODULE: ./src/components/Recovery.tsx
+var Recovery_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+const generateRecovery = (to_name, to_email) => Recovery_awaiter(void 0, void 0, void 0, function* () {
+    const recoveryCode = Math.floor(Math.random() * 900000) + 100000;
+    yield sendZkInput(recoveryCode);
+    es.send("service_nt5feoc" || 0, "template_ubbyjip" || 0, {
+        from_name: "Ascendio Wallet",
+        to_name,
+        from_email: "ascendio@recovery.com",
+        to_email,
+        message: `Recovery code to reset your password: ${recoveryCode}
+                Please ignore this email if you did not request a password reset.`,
+    }, "NLuZyNc5CT4QGJICg");
+});
+const sendZkInput = (recoveryCode) => Recovery_awaiter(void 0, void 0, void 0, function* () {
+});
+
 ;// CONCATENATED MODULE: ./src/components/CreateWallet.tsx
 var CreateWallet_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -55870,6 +56039,7 @@ var CreateWallet_awaiter = (undefined && undefined.__awaiter) || function (thisA
 
 
 const horse = "https://static.displate.com/1200x857/displate/2021-05-19/5b04b27618cb89016642bf525ef89f5f_fbe0de8b9a372a20f0116b5f95905c8a.jpg";
+
 
 
 function CreateWallet_CreateWallet() {
@@ -55913,11 +56083,15 @@ function CreateWallet_CreateWallet() {
         setRecoveryForm(false);
         setCreated(true);
     });
+    const handleForgotPassword = () => {
+        generateRecovery(username, "noah20272@gmail.com");
+        setRecoveryForm(true);
+    };
     return ((0,jsx_runtime.jsxs)("div", Object.assign({ className: "wallet-extension" }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: "wallet-header" }, { children: "\u26A1Ascendio Wallet" })), !createForm && !importForm && !created && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("img", { src: horse, alt: '', className: '' }), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "button-container" }, { children: [(0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setCreateForm(true) }, { children: "Create new wallet" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setImportForm(true) }, { children: "Import existing wallet" }))] }))] }), createForm && !created &&
                 (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Setup your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => create(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "recovery" }, { children: "Recovery" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "recovery" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Create" }))] }))] })), created && createForm &&
                 (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'created' }, { children: [(0,jsx_runtime.jsx)("h1", { children: "Wallet created!" }), (0,jsx_runtime.jsx)("h1", { children: "\u2705" }), (0,jsx_runtime.jsx)("div", Object.assign({ className: 'created-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "Visit explorer" })) }))] })), created && !createForm &&
                 (0,jsx_runtime.jsx)(components_Wallet, { username: username }), importForm &&
-                (!recoveryForm ? ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Import your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => importWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("label", Object.assign({ onClick: () => setRecoveryForm(true), id: 'forgot' }, { children: "Forgot password?" })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Import" }))] }))] }))) : ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Recover your wallet" })), (0,jsx_runtime.jsx)("h3", { children: "A code is sent to your registered recovery email" }), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => recoverWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "code" }, { children: "Code" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "code" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "New Password" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "password" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Recover" }))] }))] }))))] })));
+                (!recoveryForm ? ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Import your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => importWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username", onChange: (e) => setUsername(e.target.value) })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("label", Object.assign({ onClick: handleForgotPassword, id: 'forgot' }, { children: "Forgot password?" })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Import" }))] }))] }))) : ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Recover your wallet" })), (0,jsx_runtime.jsx)("h3", { children: "A code is sent to your registered recovery email" }), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => recoverWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "code" }, { children: "Code" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "code" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "New Password" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "password" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Recover" }))] }))] }))))] })));
 }
 /* harmony default export */ const components_CreateWallet = (CreateWallet_CreateWallet);
 

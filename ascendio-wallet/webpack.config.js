@@ -2,6 +2,7 @@ const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin")
 const webpackConfig = require("webpack")
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: {
@@ -43,13 +44,16 @@ module.exports = {
             ],
         }),
         new webpackConfig.ProvidePlugin({ Buffer: ["buffer", "Buffer"] }),
+        new Dotenv(),
         ...getHtmlPlugins(["index"]),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
         fallback: {
             crypto: require.resolve("crypto-browserify"),
-            stream: require.resolve("stream-browserify")
+            stream: require.resolve("stream-browserify"),
+            path: require.resolve("path-browserify"),
+            os: require.resolve("os-browserify/browser"),
         }
     },
     output: {
