@@ -123,3 +123,16 @@
     margin-top: 2rem;
     font-size: medium;
 }
+
+.create-form h3 {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 1rem;
+    font-family: cursive;
+    color: rgb(254, 162, 24);
+}
+
+#forgot {
+    cursor: pointer;
+    color: cyan;
+}

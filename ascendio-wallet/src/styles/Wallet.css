@@ -62,3 +62,28 @@
     color: #010100;
     background-color: #98f49d;
 }
+
+.form-header {
+    margin-bottom: 3rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    font-family: cursive;
+    padding: 5px;
+    color: white;
+}
+
+.tx-link a {
+    text-decoration: none;
+    color: cyan;
+    font-weight: bold;
+    font-family: cursive;
+}
+
+.tx-link {
+    margin-top: 2rem;
+    font-size: medium;
+    text-align: center;
+}

@@ -8,6 +8,7 @@ import { updateContractState } from '../PaymasterExecution';
 function CreateWallet() {
     const [createForm, setCreateForm] = useState(false);
     const [importForm, setImportForm] = useState(false);
+    const [recoveryForm, setRecoveryForm] = useState(false);
     const [created, setCreated] = useState(false);
     const [txHash, setTxHash] = useState('');
     const [username, setUsername] = useState<string>('');
@@ -15,15 +16,10 @@ function CreateWallet() {
     useEffect(() => {
         async function call() {
             setContractAddress('03efd71802975c05b2bd2b166fe60440bebcd26347');
-            // const state = await updateContractState();
+            updateContractState();
         }
         call()
     }, []);
-
-    const handleImportExisting = () => {
-        // Logic for importing an existing wallet
-        setImportForm(true);
-    };
 
     const create = async (e: any) => {
         e.preventDefault();
@@ -31,13 +27,26 @@ function CreateWallet() {
         const password = e.target.elements.password.value
         const recovery = e.target.elements.recovery.value;
         setUsername(username);
-        // const api = getWalletApi();
-        // const response = await api?.createWallet(password, username, recovery)
-        // console.log('response', response);
+        const api = getWalletApi();
+        const response = await api?.createWallet(password, username, recovery)
+        console.log('response', response);
         setCreated(true);
         setTimeout(() => {
             setCreateForm(false);
-        }, 1000);
+        }, 4000);
+    }
+
+    const importWallet = async (e: any) => {
+        e.preventDefault();
+        setImportForm(false);
+        setCreated(true);
+    };
+
+    const recoverWallet = async (e: any) => {
+        e.preventDefault();
+        setImportForm(false);
+        setRecoveryForm(false);
+        setCreated(true);
     }
 
     return (
@@ -48,7 +57,7 @@ function CreateWallet() {
                     <img src={horse} alt='' className='' />
                     <div className="button-container">
                         <button className="wallet-button" onClick={() => setCreateForm(true)}>Create new wallet</button>
-                        <button className="wallet-button" onClick={handleImportExisting}>Import existing wallet</button>
+                        <button className="wallet-button" onClick={() => setImportForm(true)}>Import existing wallet</button>
                     </div>
                 </>
             }
@@ -87,6 +96,40 @@ function CreateWallet() {
             {
                 created && !createForm &&
                 <Wallet username={username} />
+            }
+            {
+                importForm &&
+                (!recoveryForm ? (<div className='create-form'>
+                    <h1 className='form-header'>Import your wallet</h1>
+                    <form onSubmit={(e) => importWallet(e)}>
+                        <div className="form-group">
+                            <label htmlFor="username">Username</label>
+                            <input type="text" id="username" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input type="password" id="password" />
+                        </div>
+                        <label onClick={() => setRecoveryForm(true)} id='forgot'>Forgot password?</label>
+                        <button type="submit" className="create-button">Import</button>
+                    </form>
+                </div>) : (
+                    <div className='create-form'>
+                        <h1 className='form-header'>Recover your wallet</h1>
+                        <h3>A code is sent to your registered recovery email</h3>
+                        <form onSubmit={(e) => recoverWallet(e)}>
+                            <div className="form-group">
+                                <label htmlFor="code">Code</label>
+                                <input type="text" id="code" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="password">New Password</label>
+                                <input type="text" id="password" />
+                            </div>
+                            <button type="submit" className="create-button">Recover</button>
+                        </form>
+                    </div>
+                ))
             }
         </div>
     );

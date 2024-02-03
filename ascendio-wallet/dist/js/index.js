@@ -26821,6 +26821,19 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.wallet-extension {
 .created-link {
     margin-top: 2rem;
     font-size: medium;
+}
+
+.create-form h3 {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 1rem;
+    font-family: cursive;
+    color: rgb(254, 162, 24);
+}
+
+#forgot {
+    cursor: pointer;
+    color: cyan;
 }`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
@@ -26907,6 +26920,31 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.username {
 .button:hover {
     color: #010100;
     background-color: #98f49d;
+}
+
+.form-header {
+    margin-bottom: 3rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    font-family: cursive;
+    padding: 5px;
+    color: white;
+}
+
+.tx-link a {
+    text-decoration: none;
+    color: cyan;
+    font-weight: bold;
+    font-family: cursive;
+}
+
+.tx-link {
+    margin-top: 2rem;
+    font-size: medium;
+    text-align: center;
 }`, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
@@ -55257,13 +55295,38 @@ var Wallet_update = injectStylesIntoStyleTag_default()(Wallet/* default */.Z, Wa
 ;// CONCATENATED MODULE: ./src/components/Wallet.tsx
 
 
+
 const copy = 'https://i.imgur.com/HfIWAiz.png';
 function Wallet_Wallet({ username }) {
+    const [sendForm, setSendForm] = (0,react.useState)(false);
+    const [freezeForm, setFreezeForm] = (0,react.useState)(false);
+    const [txHash, setTxHash] = (0,react.useState)('');
     const copyUsername = () => {
         navigator.clipboard.writeText(username)
             .catch(err => console.error("Error copying username: ", err));
     };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username" }, { children: ["Username: ", username, (0,jsx_runtime.jsx)("button", Object.assign({ onClick: copyUsername }, { children: (0,jsx_runtime.jsx)("img", { src: copy, alt: "", className: 'copy-icon' }) }))] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "balance" }, { children: ["Token Balance", (0,jsx_runtime.jsx)("h1", { children: "100 MPC" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Send" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Freeze" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Deposit" }))] }));
+    const send = (e) => {
+        e.preventDefault();
+        const to = e.target.elements.to.value;
+        const amount = e.target.elements.amount.value;
+        setTxHash('0x1234567890');
+        setTimeout(() => {
+            setSendForm(false);
+            setFreezeForm(false);
+            setTxHash('');
+        }, 4000);
+    };
+    const freeze = (e) => {
+        e.preventDefault();
+        const duration = e.target.elements.duration.value;
+        setTxHash('0x1234567890');
+        setTimeout(() => {
+            setSendForm(false);
+            setFreezeForm(false);
+            setTxHash('');
+        }, 4000);
+    };
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [!sendForm && !freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username" }, { children: ["Username: ", username, (0,jsx_runtime.jsx)("button", Object.assign({ onClick: copyUsername }, { children: (0,jsx_runtime.jsx)("img", { src: copy, alt: "", className: 'copy-icon' }) }))] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "balance" }, { children: ["Token Balance", (0,jsx_runtime.jsx)("h1", { children: "100 MPC" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setSendForm(true) }, { children: "Send \uD83D\uDCE4" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setFreezeForm(true) }, { children: "Freeze \uD83E\uDD76" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Deposit \uD83D\uDCE9" }))] }), sendForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("div", Object.assign({ className: "username form-header" }, { children: "Send MPC tokens" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => send(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "to", className: 'form-label' }, { children: "To" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "to" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "amount", className: 'form-label' }, { children: "Amount" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "amount" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Send" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "\u2705 Sent: Visit explorer" })) }))] }))] }), freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username form-header" }, { children: ["Freeze your wallet", (0,jsx_runtime.jsx)("br", {}), (0,jsx_runtime.jsx)("br", {}), "\u26A0\uFE0F Irreversible action"] })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => freeze(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "duration", className: 'form-label' }, { children: "Duration" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "duration" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Freeze" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "\u2705 Frozen: Visit explorer" })) }))] }))] })] }));
 }
 /* harmony default export */ const components_Wallet = (Wallet_Wallet);
 
@@ -55808,9 +55871,11 @@ var CreateWallet_awaiter = (undefined && undefined.__awaiter) || function (thisA
 
 const horse = "https://static.displate.com/1200x857/displate/2021-05-19/5b04b27618cb89016642bf525ef89f5f_fbe0de8b9a372a20f0116b5f95905c8a.jpg";
 
+
 function CreateWallet_CreateWallet() {
     const [createForm, setCreateForm] = (0,react.useState)(false);
     const [importForm, setImportForm] = (0,react.useState)(false);
+    const [recoveryForm, setRecoveryForm] = (0,react.useState)(false);
     const [created, setCreated] = (0,react.useState)(false);
     const [txHash, setTxHash] = (0,react.useState)('');
     const [username, setUsername] = (0,react.useState)('');
@@ -55818,33 +55883,41 @@ function CreateWallet_CreateWallet() {
         function call() {
             return CreateWallet_awaiter(this, void 0, void 0, function* () {
                 setContractAddress('03efd71802975c05b2bd2b166fe60440bebcd26347');
-                // const state = await updateContractState();
+                updateContractState();
             });
         }
         call();
     }, []);
-    const handleImportExisting = () => {
-        // Logic for importing an existing wallet
-        setImportForm(true);
-    };
     const create = (e) => CreateWallet_awaiter(this, void 0, void 0, function* () {
         e.preventDefault();
         const username = e.target.elements.username.value;
         const password = e.target.elements.password.value;
         const recovery = e.target.elements.recovery.value;
         setUsername(username);
-        // const api = getWalletApi();
-        // const response = await api?.createWallet(password, username, recovery)
-        // console.log('response', response);
+        const api = getWalletApi();
+        const response = yield (api === null || api === void 0 ? void 0 : api.createWallet(password, username, recovery));
+        console.log('response', response);
         setCreated(true);
         setTimeout(() => {
             setCreateForm(false);
-        }, 1000);
+        }, 4000);
     });
-    return ((0,jsx_runtime.jsxs)("div", Object.assign({ className: "wallet-extension" }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: "wallet-header" }, { children: "\u26A1Ascendio Wallet" })), !createForm && !importForm && !created && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("img", { src: horse, alt: '', className: '' }), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "button-container" }, { children: [(0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setCreateForm(true) }, { children: "Create new wallet" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: handleImportExisting }, { children: "Import existing wallet" }))] }))] }), createForm && !created &&
+    const importWallet = (e) => CreateWallet_awaiter(this, void 0, void 0, function* () {
+        e.preventDefault();
+        setImportForm(false);
+        setCreated(true);
+    });
+    const recoverWallet = (e) => CreateWallet_awaiter(this, void 0, void 0, function* () {
+        e.preventDefault();
+        setImportForm(false);
+        setRecoveryForm(false);
+        setCreated(true);
+    });
+    return ((0,jsx_runtime.jsxs)("div", Object.assign({ className: "wallet-extension" }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: "wallet-header" }, { children: "\u26A1Ascendio Wallet" })), !createForm && !importForm && !created && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("img", { src: horse, alt: '', className: '' }), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "button-container" }, { children: [(0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setCreateForm(true) }, { children: "Create new wallet" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setImportForm(true) }, { children: "Import existing wallet" }))] }))] }), createForm && !created &&
                 (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Setup your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => create(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "recovery" }, { children: "Recovery" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "recovery" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Create" }))] }))] })), created && createForm &&
                 (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'created' }, { children: [(0,jsx_runtime.jsx)("h1", { children: "Wallet created!" }), (0,jsx_runtime.jsx)("h1", { children: "\u2705" }), (0,jsx_runtime.jsx)("div", Object.assign({ className: 'created-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "Visit explorer" })) }))] })), created && !createForm &&
-                (0,jsx_runtime.jsx)(components_Wallet, { username: username })] })));
+                (0,jsx_runtime.jsx)(components_Wallet, { username: username }), importForm &&
+                (!recoveryForm ? ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Import your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => importWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("label", Object.assign({ onClick: () => setRecoveryForm(true), id: 'forgot' }, { children: "Forgot password?" })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Import" }))] }))] }))) : ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Recover your wallet" })), (0,jsx_runtime.jsx)("h3", { children: "A code is sent to your registered recovery email" }), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => recoverWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "code" }, { children: "Code" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "code" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "New Password" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "password" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Recover" }))] }))] }))))] })));
 }
 /* harmony default export */ const components_CreateWallet = (CreateWallet_CreateWallet);
 
