@@ -113,8 +113,7 @@
     margin: 1rem auto;
 }
 
-.created a {
-    text-decoration: none;
+.created-link div {
     color: cyan;
     font-weight: bold;
 }

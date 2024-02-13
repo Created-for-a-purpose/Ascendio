@@ -90,6 +90,9 @@ pub fn create_wallet(
     }
     state.wallets.insert(username.clone(), SecretVarId::new(0));
     state.recovery.insert(username.clone(), recovery.clone());
+    state.frozen.insert(username.clone(), false);
+    state.freeze_duration.insert(username.clone(), 0);
+    state.freeze_start.insert(username.clone(), 0);
     
     let input_def = ZkInputDef::with_metadata(SecretVarMetadata {
         variable_type: SecretVarType::Password,

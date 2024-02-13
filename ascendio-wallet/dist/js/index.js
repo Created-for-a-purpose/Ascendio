@@ -26812,8 +26812,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.wallet-extension {
     margin: 1rem auto;
 }
 
-.created a {
-    text-decoration: none;
+.created-link div {
     color: cyan;
     font-weight: bold;
 }
@@ -26934,8 +26933,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.username {
     color: white;
 }
 
-.tx-link a {
-    text-decoration: none;
+.tx-link div {
     color: cyan;
     font-weight: bold;
     font-family: cursive;
@@ -55292,44 +55290,6 @@ var Wallet_update = injectStylesIntoStyleTag_default()(Wallet/* default */.Z, Wa
 
        /* harmony default export */ const styles_Wallet = (Wallet/* default */.Z && Wallet/* default */.Z.locals ? Wallet/* default */.Z.locals : undefined);
 
-;// CONCATENATED MODULE: ./src/components/Wallet.tsx
-
-
-
-const copy = 'https://i.imgur.com/HfIWAiz.png';
-function Wallet_Wallet({ username }) {
-    const [sendForm, setSendForm] = (0,react.useState)(false);
-    const [freezeForm, setFreezeForm] = (0,react.useState)(false);
-    const [txHash, setTxHash] = (0,react.useState)('');
-    const copyUsername = () => {
-        navigator.clipboard.writeText(username)
-            .catch(err => console.error("Error copying username: ", err));
-    };
-    const send = (e) => {
-        e.preventDefault();
-        const to = e.target.elements.to.value;
-        const amount = e.target.elements.amount.value;
-        setTxHash('0x1234567890');
-        setTimeout(() => {
-            setSendForm(false);
-            setFreezeForm(false);
-            setTxHash('');
-        }, 4000);
-    };
-    const freeze = (e) => {
-        e.preventDefault();
-        const duration = e.target.elements.duration.value;
-        setTxHash('0x1234567890');
-        setTimeout(() => {
-            setSendForm(false);
-            setFreezeForm(false);
-            setTxHash('');
-        }, 4000);
-    };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [!sendForm && !freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username" }, { children: ["Username: ", username, (0,jsx_runtime.jsx)("button", Object.assign({ onClick: copyUsername }, { children: (0,jsx_runtime.jsx)("img", { src: copy, alt: "", className: 'copy-icon' }) }))] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "balance" }, { children: ["Token Balance", (0,jsx_runtime.jsx)("h1", { children: "100 MPC" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setSendForm(true) }, { children: "Send \uD83D\uDCE4" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setFreezeForm(true) }, { children: "Freeze \uD83E\uDD76" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Deposit \uD83D\uDCE9" }))] }), sendForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("div", Object.assign({ className: "username form-header" }, { children: "Send MPC tokens" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => send(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "to", className: 'form-label' }, { children: "To" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "to" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "amount", className: 'form-label' }, { children: "Amount" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "amount" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Send" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "\u2705 Sent: Visit explorer" })) }))] }))] }), freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username form-header" }, { children: ["Freeze your wallet", (0,jsx_runtime.jsx)("br", {}), (0,jsx_runtime.jsx)("br", {}), "\u26A0\uFE0F Irreversible action"] })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => freeze(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "duration", className: 'form-label' }, { children: "Duration" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "duration" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Freeze" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "\u2705 Frozen: Visit explorer" })) }))] }))] })] }));
-}
-/* harmony default export */ const components_Wallet = (Wallet_Wallet);
-
 ;// CONCATENATED MODULE: ./src/client/BaseClient.ts
 const getHeaders = {
     Accept: "application/json, text/plain, */*",
@@ -55394,7 +55354,7 @@ class PbcClient {
 }
 
 ;// CONCATENATED MODULE: ./src/client/ShardedClient.ts
-/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/* provided dependency */ var ShardedClient_Buffer = __webpack_require__(8764)["Buffer"];
 
 
 /**
@@ -55423,7 +55383,7 @@ class ShardedClient {
             return null;
         }
         else {
-            const buffer = Buffer.from(address, "hex");
+            const buffer = ShardedClient_Buffer.from(address, "hex");
             const shardIndex = Math.abs(buffer.readInt32BE(17)) % this.shards.length;
             return this.shards[shardIndex];
         }
@@ -55483,7 +55443,7 @@ class TransactionApi {
             return new Promise((resolve) => setTimeout(resolve, millis));
         };
         this.waitForTransaction = (shard, identifier, tryCount = 0) => {
-            return CLIENT.getExecutedTransaction(shard, identifier).then((executedTransaction) => {
+            return AppState_CLIENT.getExecutedTransaction(shard, identifier).then((executedTransaction) => {
                 if (executedTransaction == null) {
                     if (tryCount >= TransactionApi.MAX_TRIES) {
                         throw new Error('Transaction "' + identifier + '" not finalized at shard "' + shard + '"');
@@ -55513,13 +55473,19 @@ TransactionApi.MAX_TRIES = TransactionApi.TRANSACTION_TTL / _a.DELAY_BETWEEN_RET
 var main = __webpack_require__(5367);
 // EXTERNAL MODULE: ./node_modules/@partisiablockchain/zk-client/target/main/index.js
 var target_main = __webpack_require__(7008);
+// EXTERNAL MODULE: ./node_modules/bn.js/lib/bn.js
+var bn = __webpack_require__(3550);
+var bn_default = /*#__PURE__*/__webpack_require__.n(bn);
 ;// CONCATENATED MODULE: ./src/contract/WalletApi.ts
+
 
 
 
 class WalletApi {
     constructor(transactionApi, sender, abi, engineKeys) {
         this.createWallet = (password, username, recovery) => {
+            if (username === "" || recovery === "")
+                return Promise.reject("Username and recovery mail cannot be empty");
             const address = getContractAddress();
             if (address === undefined) {
                 throw new Error("Contract address is not set");
@@ -55529,11 +55495,77 @@ class WalletApi {
             fnBuilder.addString(recovery);
             const publicRpc = fnBuilder.getBytes();
             const secretInputBuilder = main.ZkInputBuilder.createZkInputBuilder("create_wallet", this.abi);
-            // const Password = newPassword(password);
-            secretInputBuilder.addI128(password);
+            const structBuilder = secretInputBuilder.addStruct();
+            structBuilder.addI128(new (bn_default())(password));
             const compactBitArray = secretInputBuilder.getBits();
             const rpc = target_main.ZkRpcBuilder.zkInputOnChain(this.sender, compactBitArray, publicRpc, this.engineKeys);
             return this.transactionApi.sendTransactionAndWait(address, rpc, 100000);
+        };
+        this.sendTransaction = (username, amount, recipientUsername, password) => {
+            const address = getContractAddress();
+            if (address === undefined) {
+                throw new Error("Contract address is not set");
+            }
+            const tokenAddress = "028ee0ad1c1a13277b900b6e5bcbfbe082569180f0";
+            const fnBuilder = new main.FnRpcBuilder("send_transaction", this.abi);
+            fnBuilder.addString(username);
+            fnBuilder.addAddress(tokenAddress);
+            fnBuilder.addU128(new (bn_default())(amount.toString()));
+            fnBuilder.addString(recipientUsername);
+            const publicRpc = fnBuilder.getBytes();
+            const secretInputBuilder = main.ZkInputBuilder.createZkInputBuilder("send_transaction", this.abi);
+            const structBuilder = secretInputBuilder.addStruct();
+            structBuilder.addI128(new (bn_default())(password));
+            const compactBitArray = secretInputBuilder.getBits();
+            const rpc = target_main.ZkRpcBuilder.zkInputOnChain(this.sender, compactBitArray, publicRpc, this.engineKeys);
+            return this.transactionApi.sendTransactionAndWait(address, rpc, 1000000);
+        };
+        this.setRecovery = (username, code) => {
+            const address = getContractAddress();
+            if (address === undefined) {
+                throw new Error("Contract address is not set");
+            }
+            const fnBuilder = new main.FnRpcBuilder("set_recovery", this.abi);
+            fnBuilder.addString(username);
+            const publicRpc = fnBuilder.getBytes();
+            const secretInputBuilder = main.ZkInputBuilder.createZkInputBuilder("set_recovery", this.abi);
+            const structBuilder = secretInputBuilder.addStruct();
+            structBuilder.addI32(code);
+            const compactBitArray = secretInputBuilder.getBits();
+            const rpc = target_main.ZkRpcBuilder.zkInputOnChain(this.sender, compactBitArray, publicRpc, this.engineKeys);
+            return this.transactionApi.sendTransactionAndWait(address, rpc, 100000);
+        };
+        this.recover = (username, password, recovery) => {
+            const address = getContractAddress();
+            if (address === undefined) {
+                throw new Error("Contract address is not set");
+            }
+            const fnBuilder = new main.FnRpcBuilder("recover", this.abi);
+            fnBuilder.addString(username);
+            const publicRpc = fnBuilder.getBytes();
+            const secretInputBuilder = main.ZkInputBuilder.createZkInputBuilder("recover", this.abi);
+            const structBuilder = secretInputBuilder.addStruct();
+            structBuilder.addI128(new (bn_default())(password));
+            structBuilder.addI32(recovery);
+            const compactBitArray = secretInputBuilder.getBits();
+            const rpc = target_main.ZkRpcBuilder.zkInputOnChain(this.sender, compactBitArray, publicRpc, this.engineKeys);
+            return this.transactionApi.sendTransactionAndWait(address, rpc, 1000000);
+        };
+        this.freeze = (username, duration, password) => {
+            const address = getContractAddress();
+            if (address === undefined) {
+                throw new Error("Contract address is not set");
+            }
+            const fnBuilder = new main.FnRpcBuilder("freeze_wallet", this.abi);
+            fnBuilder.addString(username);
+            fnBuilder.addU32(duration);
+            const publicRpc = fnBuilder.getBytes();
+            const secretInputBuilder = main.ZkInputBuilder.createZkInputBuilder("freeze_wallet", this.abi);
+            const structBuilder = secretInputBuilder.addStruct();
+            structBuilder.addI128(new (bn_default())(password));
+            const compactBitArray = secretInputBuilder.getBits();
+            const rpc = target_main.ZkRpcBuilder.zkInputOnChain(this.sender, compactBitArray, publicRpc, this.engineKeys);
+            return this.transactionApi.sendTransactionAndWait(address, rpc, 1000000);
         };
         this.transactionApi = transactionApi;
         this.sender = target_main.BlockchainAddress.fromString(sender);
@@ -55544,9 +55576,6 @@ class WalletApi {
 
 // EXTERNAL MODULE: ./node_modules/buffer/index.js
 var buffer = __webpack_require__(8764);
-// EXTERNAL MODULE: ./node_modules/bn.js/lib/bn.js
-var bn = __webpack_require__(3550);
-var bn_default = /*#__PURE__*/__webpack_require__.n(bn);
 ;// CONCATENATED MODULE: ./src/client/BufferWriter.ts
 /* provided dependency */ var BufferWriter_Buffer = __webpack_require__(8764)["Buffer"];
 /**
@@ -55704,6 +55733,93 @@ function defreeze(username) {
     return fnBuilder.getBytes();
 }
 
+;// CONCATENATED MODULE: ./src/contract/MpcGenerated.ts
+/* provided dependency */ var MpcGenerated_Buffer = __webpack_require__(8764)["Buffer"];
+
+const MpcGenerated_fileAbi = new main.AbiParser(MpcGenerated_Buffer.from("5042434142490a020005040000000006010000000e416c6c6f7765644164647265737300000002000000056f776e65720b000000077370656e6465720b01000000085472616e736665720000000200000002746f0b00000006616d6f756e7405010000000a546f6b656e537461746500000008000000046e616d650b00000008646563696d616c73010000000673796d626f6c0b000000056f776e65720d00000010636f6e74726163745f616464726573730d0000000c746f74616c5f737570706c79050000000862616c616e636573190b0500000007616c6c6f77656419000005010000000b536563726574566172496400000001000000067261775f69640301000000134576656e74537562736372697074696f6e496400000001000000067261775f696408010000000f45787465726e616c4576656e74496400000001000000067261775f69640800000003010000000a696e697469616c697a65ffffffff0f0000000500000010636f6e74726163745f616464726573730d000000046e616d650b0000000673796d626f6c0b00000008646563696d616c73010000000c746f74616c5f737570706c790502000000087472616e7366657201000000030000000673656e6465720b00000002746f0b00000006616d6f756e740502000000147365745f636f6e74726163745f61646472657373020000000100000007616464726573730d0002", "hex")).parseAbi();
+function newAllowedAddress(owner, spender) {
+    return { owner, spender };
+}
+function fromScValueAllowedAddress(structValue) {
+    return {
+        owner: structValue.getFieldValue("owner").stringValue(),
+        spender: structValue.getFieldValue("spender").stringValue(),
+    };
+}
+function newTransfer(to, amount) {
+    return { to, amount };
+}
+function fromScValueTransfer(structValue) {
+    return {
+        to: structValue.getFieldValue("to").stringValue(),
+        amount: structValue.getFieldValue("amount").asBN(),
+    };
+}
+function newTokenState(name, decimals, symbol, owner, contractAddress, totalSupply, balances, allowed) {
+    return { name, decimals, symbol, owner, contractAddress, totalSupply, balances, allowed };
+}
+function fromScValueTokenState(structValue) {
+    return {
+        name: structValue.getFieldValue("name").stringValue(),
+        decimals: structValue.getFieldValue("decimals").asNumber(),
+        symbol: structValue.getFieldValue("symbol").stringValue(),
+        owner: BlockchainAddress.fromBuffer(structValue.getFieldValue("owner").addressValue().value),
+        contractAddress: BlockchainAddress.fromBuffer(structValue.getFieldValue("contract_address").addressValue().value),
+        totalSupply: structValue.getFieldValue("total_supply").asBN(),
+        balances: structValue.getFieldValue("balances").avlTreeMapValue().mapKeysValues((k1) => k1.stringValue(), (v2) => v2.asBN()),
+        allowed: structValue.getFieldValue("allowed").avlTreeMapValue().mapKeysValues((k3) => fromScValueAllowedAddress(k3.structValue()), (v4) => v4.asBN()),
+    };
+}
+function MpcGenerated_deserializeTokenState(state) {
+    const scValue = new StateReader(state.state, MpcGenerated_fileAbi.contract, state.avlTrees).readState();
+    return fromScValueTokenState(scValue);
+}
+function MpcGenerated_newSecretVarId(rawId) {
+    return { rawId };
+}
+function MpcGenerated_fromScValueSecretVarId(structValue) {
+    return {
+        rawId: structValue.getFieldValue("raw_id").asNumber(),
+    };
+}
+function MpcGenerated_newEventSubscriptionId(rawId) {
+    return { rawId };
+}
+function MpcGenerated_fromScValueEventSubscriptionId(structValue) {
+    return {
+        rawId: structValue.getFieldValue("raw_id").asNumber(),
+    };
+}
+function MpcGenerated_newExternalEventId(rawId) {
+    return { rawId };
+}
+function MpcGenerated_fromScValueExternalEventId(structValue) {
+    return {
+        rawId: structValue.getFieldValue("raw_id").asNumber(),
+    };
+}
+function MpcGenerated_initialize(contractAddress, name, symbol, decimals, totalSupply) {
+    const fnBuilder = new FnRpcBuilder("initialize", MpcGenerated_fileAbi.contract);
+    fnBuilder.addAddress(contractAddress.asBuffer());
+    fnBuilder.addString(name);
+    fnBuilder.addString(symbol);
+    fnBuilder.addU8(decimals);
+    fnBuilder.addU128(totalSupply);
+    return fnBuilder.getBytes();
+}
+function transfer(sender, to, amount) {
+    const fnBuilder = new FnRpcBuilder("transfer", MpcGenerated_fileAbi.contract);
+    fnBuilder.addString(sender);
+    fnBuilder.addString(to);
+    fnBuilder.addU128(amount);
+    return fnBuilder.getBytes();
+}
+function setContractAddress(address) {
+    const fnBuilder = new FnRpcBuilder("set_contract_address", MpcGenerated_fileAbi.contract);
+    fnBuilder.addAddress(address.asBuffer());
+    return fnBuilder.getBytes();
+}
+
 // EXTERNAL MODULE: ./node_modules/@secata-public/bitmanipulation-ts/target/main/index.js
 var bitmanipulation_ts_target_main = __webpack_require__(4901);
 ;// CONCATENATED MODULE: ./src/PaymasterExecution.ts
@@ -55724,11 +55840,12 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
 const connectPaymaster = (sender, keyPair) => __awaiter(void 0, void 0, void 0, function* () {
     return {
         address: sender,
         signAndSendTransaction: (payload, cost = 0) => {
-            return CLIENT.getAccountData(sender).then((accountData) => {
+            return AppState_CLIENT.getAccountData(sender).then((accountData) => {
                 if (accountData == null) {
                     throw new Error("Account data was null");
                 }
@@ -55748,7 +55865,7 @@ const connectPaymaster = (sender, keyPair) => __awaiter(void 0, void 0, void 0, 
                     serializedTx,
                 ]);
                 // Send the transaction to the blockchain
-                return CLIENT.putTransaction(transactionPayload).then((txPointer) => {
+                return AppState_CLIENT.putTransaction(transactionPayload).then((txPointer) => {
                     if (txPointer != null) {
                         return {
                             putSuccessful: true,
@@ -55785,7 +55902,7 @@ const updateContractState = () => {
     if (address === undefined) {
         throw new Error("No address provided");
     }
-    return CLIENT.getContractData(address).then((contract) => {
+    return AppState_CLIENT.getContractData(address).then((contract) => {
         if (contract != null) {
             // Parses the contract abi
             if (getContractAbi() === undefined) {
@@ -55808,13 +55925,37 @@ const updateContractState = () => {
         }
     });
 };
+const getTokenState = () => {
+    const address = "028ee0ad1c1a13277b900b6e5bcbfbe082569180f0";
+    return CLIENT.getContractData(address).then((contract) => {
+        if (contract != null) {
+            // Reads the state of the contract
+            const stateBuffer = Buffer.from(contract.serializedContract.state.data, "base64");
+            const state = deserializeTokenState({ state: stateBuffer });
+            return state;
+        }
+    });
+};
+const getUserRecovery = (username) => {
+    const address = getContractAddress();
+    if (address === undefined) {
+        throw new Error("No address provided");
+    }
+    return AppState_CLIENT.getContractData(address).then((contract) => {
+        if (contract != null) {
+            const stateBuffer = buffer.Buffer.from(contract.serializedContract.openState.openState.data, "base64");
+            const state = deserializeContractState({ state: stateBuffer });
+            return state.recovery.get(username);
+        }
+    });
+};
 
 ;// CONCATENATED MODULE: ./src/AppState.ts
 
 
 
 
-const CLIENT = new ShardedClient("https://node1.testnet.partisiablockchain.com", [
+const AppState_CLIENT = new ShardedClient("https://node1.testnet.partisiablockchain.com", [
     "Shard0",
     "Shard1",
     "Shard2",
@@ -55854,9 +55995,78 @@ const setEngineKeys = (keys) => {
 const getContractAddress = () => {
     return contractAddress;
 };
-const setContractAddress = (address) => {
+const AppState_setContractAddress = (address) => {
     contractAddress = address;
 };
+
+;// CONCATENATED MODULE: ./src/components/Wallet.tsx
+var Wallet_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+
+
+
+const copy = 'https://i.imgur.com/HfIWAiz.png';
+function Wallet_Wallet({ username, password }) {
+    const [sendForm, setSendForm] = (0,react.useState)(false);
+    const [freezeForm, setFreezeForm] = (0,react.useState)(false);
+    const [txHash, setTxHash] = (0,react.useState)('');
+    (0,react.useEffect)(() => {
+        function loadState() {
+            return Wallet_awaiter(this, void 0, void 0, function* () {
+            });
+        }
+        loadState();
+    }, []);
+    const copyUsername = () => {
+        navigator.clipboard.writeText(username)
+            .catch(err => console.error("Error copying username: ", err));
+    };
+    const send = (e) => Wallet_awaiter(this, void 0, void 0, function* () {
+        e.preventDefault();
+        const to = e.target.elements.to.value;
+        const amount = e.target.elements.amount.value;
+        const api = getWalletApi();
+        const response = yield (api === null || api === void 0 ? void 0 : api.sendTransaction(username, amount, to, new (bn_default())(password)));
+        if (response === undefined) {
+            console.log('Error sending transaction');
+            return;
+        }
+        setTxHash(response);
+        setTimeout(() => {
+            setSendForm(false);
+            setFreezeForm(false);
+            setTxHash('');
+        }, 4000);
+    });
+    const freeze = (e) => Wallet_awaiter(this, void 0, void 0, function* () {
+        e.preventDefault();
+        const duration = e.target.elements.duration.value;
+        console.log('Freezing wallet for ', duration, ' days');
+        const api = getWalletApi();
+        const response = yield (api === null || api === void 0 ? void 0 : api.freeze(username, duration, password));
+        if (response === undefined) {
+            console.log('Error freezing wallet');
+            return;
+        }
+        setTxHash(response);
+        setTimeout(() => {
+            setSendForm(false);
+            setFreezeForm(false);
+            setTxHash('');
+        }, 4000);
+    });
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [!sendForm && !freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username" }, { children: ["Username: ", username, (0,jsx_runtime.jsx)("button", Object.assign({ onClick: copyUsername }, { children: (0,jsx_runtime.jsx)("img", { src: copy, alt: "", className: 'copy-icon' }) }))] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "balance" }, { children: ["Token Balance", (0,jsx_runtime.jsx)("h1", { children: "100 MPC" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setSendForm(true) }, { children: "Send \uD83D\uDCE4" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => setFreezeForm(true) }, { children: "Freeze \uD83E\uDD76" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "button", onClick: () => null }, { children: "Defreeze \u2668\uFE0F" }))] }), sendForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("div", Object.assign({ className: "username form-header" }, { children: "Send MPC tokens" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => send(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "to", className: 'form-label' }, { children: "To" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "to" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "amount", className: 'form-label' }, { children: "Amount" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "amount" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Send" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("div", Object.assign({ onClick: (e) => { e.stopPropagation(); window.open(`https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, '_blank', 'width=800,height=600'); } }, { children: "\u2705 Sent: Visit explorer" })) }))] }))] }), freezeForm && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "username form-header" }, { children: ["Freeze your wallet", (0,jsx_runtime.jsx)("br", {}), (0,jsx_runtime.jsx)("br", {}), "\u26A0\uFE0F Irreversible action"] })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => freeze(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "duration", className: 'form-label' }, { children: "Duration (days)" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "duration" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Freeze" })), txHash && (0,jsx_runtime.jsx)("div", Object.assign({ className: 'tx-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank', onClick: (e) => { e.stopPropagation(); } }, { children: "\u2705 Frozen: Visit explorer" })) }))] }))] })] }));
+}
+/* harmony default export */ const components_Wallet = (Wallet_Wallet);
 
 ;// CONCATENATED MODULE: ./node_modules/@emailjs/browser/es/store/store.js
 const store = {
@@ -56009,9 +56219,11 @@ var Recovery_awaiter = (undefined && undefined.__awaiter) || function (thisArg, 
     });
 };
 
+
 const generateRecovery = (to_name, to_email) => Recovery_awaiter(void 0, void 0, void 0, function* () {
     const recoveryCode = Math.floor(Math.random() * 900000) + 100000;
-    yield sendZkInput(recoveryCode);
+    const api = getWalletApi();
+    yield (api === null || api === void 0 ? void 0 : api.setRecovery(to_name, recoveryCode));
     es.send("service_nt5feoc" || 0, "template_ubbyjip" || 0, {
         from_name: "Ascendio Wallet",
         to_name,
@@ -56020,8 +56232,6 @@ const generateRecovery = (to_name, to_email) => Recovery_awaiter(void 0, void 0,
         message: `Recovery code to reset your password: ${recoveryCode}
                 Please ignore this email if you did not request a password reset.`,
     }, "NLuZyNc5CT4QGJICg");
-});
-const sendZkInput = (recoveryCode) => Recovery_awaiter(void 0, void 0, void 0, function* () {
 });
 
 ;// CONCATENATED MODULE: ./src/components/CreateWallet.tsx
@@ -56049,10 +56259,11 @@ function CreateWallet_CreateWallet() {
     const [created, setCreated] = (0,react.useState)(false);
     const [txHash, setTxHash] = (0,react.useState)('');
     const [username, setUsername] = (0,react.useState)('');
+    const [password, setPassword] = (0,react.useState)('');
     (0,react.useEffect)(() => {
         function call() {
             return CreateWallet_awaiter(this, void 0, void 0, function* () {
-                setContractAddress('03efd71802975c05b2bd2b166fe60440bebcd26347');
+                AppState_setContractAddress('032c5baac4443ca1168d54667df4e9c82f1828a4e7');
                 updateContractState();
             });
         }
@@ -56064,9 +56275,14 @@ function CreateWallet_CreateWallet() {
         const password = e.target.elements.password.value;
         const recovery = e.target.elements.recovery.value;
         setUsername(username);
+        setPassword(password);
         const api = getWalletApi();
         const response = yield (api === null || api === void 0 ? void 0 : api.createWallet(password, username, recovery));
-        console.log('response', response);
+        if (response === undefined) {
+            console.log('Error creating wallet');
+            return;
+        }
+        setTxHash(response);
         setCreated(true);
         setTimeout(() => {
             setCreateForm(false);
@@ -56074,24 +56290,42 @@ function CreateWallet_CreateWallet() {
     });
     const importWallet = (e) => CreateWallet_awaiter(this, void 0, void 0, function* () {
         e.preventDefault();
+        const username = e.target.elements.username.value;
+        const password = e.target.elements.password.value;
+        setUsername(username);
+        setPassword(password);
         setImportForm(false);
         setCreated(true);
     });
     const recoverWallet = (e) => CreateWallet_awaiter(this, void 0, void 0, function* () {
         e.preventDefault();
+        const password = e.target.elements.password.value;
+        setPassword(password);
+        const walletApi = getWalletApi();
+        const response = yield (walletApi === null || walletApi === void 0 ? void 0 : walletApi.recover(username, e.target.elements.password.value, e.target.elements.code.value));
+        if (response === undefined) {
+            console.log('Error recovering wallet');
+            return;
+        }
+        setTxHash(response);
         setImportForm(false);
         setRecoveryForm(false);
         setCreated(true);
     });
-    const handleForgotPassword = () => {
-        generateRecovery(username, "noah20272@gmail.com");
+    const handleForgotPassword = () => CreateWallet_awaiter(this, void 0, void 0, function* () {
+        const recovery = yield getUserRecovery(username);
+        if (recovery === undefined) {
+            console.log('Error getting recovery code');
+            return;
+        }
+        generateRecovery(username, recovery);
         setRecoveryForm(true);
-    };
+    });
     return ((0,jsx_runtime.jsxs)("div", Object.assign({ className: "wallet-extension" }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: "wallet-header" }, { children: "\u26A1Ascendio Wallet" })), !createForm && !importForm && !created && (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("img", { src: horse, alt: '', className: '' }), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "button-container" }, { children: [(0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setCreateForm(true) }, { children: "Create new wallet" })), (0,jsx_runtime.jsx)("button", Object.assign({ className: "wallet-button", onClick: () => setImportForm(true) }, { children: "Import existing wallet" }))] }))] }), createForm && !created &&
                 (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Setup your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => create(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "recovery" }, { children: "Recovery" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "recovery" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Create" }))] }))] })), created && createForm &&
-                (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'created' }, { children: [(0,jsx_runtime.jsx)("h1", { children: "Wallet created!" }), (0,jsx_runtime.jsx)("h1", { children: "\u2705" }), (0,jsx_runtime.jsx)("div", Object.assign({ className: 'created-link' }, { children: (0,jsx_runtime.jsx)("a", Object.assign({ href: `https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, target: '_blank' }, { children: "Visit explorer" })) }))] })), created && !createForm &&
-                (0,jsx_runtime.jsx)(components_Wallet, { username: username }), importForm &&
-                (!recoveryForm ? ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Import your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => importWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username", onChange: (e) => setUsername(e.target.value) })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("label", Object.assign({ onClick: handleForgotPassword, id: 'forgot' }, { children: "Forgot password?" })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Import" }))] }))] }))) : ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Recover your wallet" })), (0,jsx_runtime.jsx)("h3", { children: "A code is sent to your registered recovery email" }), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => recoverWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "code" }, { children: "Code" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "code" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "New Password" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "password" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Recover" }))] }))] }))))] })));
+                (0,jsx_runtime.jsxs)("div", Object.assign({ className: 'created' }, { children: [(0,jsx_runtime.jsx)("h1", { children: "Wallet created!" }), (0,jsx_runtime.jsx)("h1", { children: "\u2705" }), (0,jsx_runtime.jsx)("div", Object.assign({ className: 'created-link' }, { children: (0,jsx_runtime.jsx)("div", Object.assign({ onClick: (e) => { e.stopPropagation(); window.open(`https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, '_blank', 'width=800,height=600'); } }, { children: "Visit explorer" })) }))] })), created && !createForm &&
+                (0,jsx_runtime.jsx)(components_Wallet, { username: username, password: password }), importForm &&
+                (!recoveryForm ? ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Import your wallet" })), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => importWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "username" }, { children: "Username" })), (0,jsx_runtime.jsx)("input", { type: "text", id: "username", onChange: (e) => setUsername(e.target.value) })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("label", Object.assign({ onClick: handleForgotPassword, id: 'forgot' }, { children: "Forgot password?" })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Import" }))] }))] }))) : ((0,jsx_runtime.jsxs)("div", Object.assign({ className: 'create-form' }, { children: [(0,jsx_runtime.jsx)("h1", Object.assign({ className: 'form-header' }, { children: "Recover your wallet" })), (0,jsx_runtime.jsx)("h3", { children: "A code is sent to your registered recovery email" }), (0,jsx_runtime.jsxs)("form", Object.assign({ onSubmit: (e) => recoverWallet(e) }, { children: [(0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "code" }, { children: "Code" })), (0,jsx_runtime.jsx)("input", { type: "number", id: "code" })] })), (0,jsx_runtime.jsxs)("div", Object.assign({ className: "form-group" }, { children: [(0,jsx_runtime.jsx)("label", Object.assign({ htmlFor: "password" }, { children: "New Password" })), (0,jsx_runtime.jsx)("input", { type: "password", id: "password" })] })), (0,jsx_runtime.jsx)("button", Object.assign({ type: "submit", className: "create-button" }, { children: "Recover" }))] }))] }))))] })));
 }
 /* harmony default export */ const components_CreateWallet = (CreateWallet_CreateWallet);
 

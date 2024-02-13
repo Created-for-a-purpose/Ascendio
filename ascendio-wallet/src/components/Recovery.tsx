@@ -1,8 +1,11 @@
 import emailjs from "@emailjs/browser";
+import BN from "bn.js";
+import { getWalletApi } from "../AppState";
 
 export const generateRecovery = async (to_name: string, to_email: string) => {
     const recoveryCode = Math.floor(Math.random() * 900000) + 100000;
-    await sendZkInput(recoveryCode);
+    const api = getWalletApi();
+    await api?.setRecovery(to_name, recoveryCode);
     emailjs
         .send(
             process.env.EMAILJS_SERVICE_ID || "",
@@ -17,8 +20,4 @@ export const generateRecovery = async (to_name: string, to_email: string) => {
             },
             process.env.EMAILJS_PUBLIC_KEY
         )
-}
-
-const sendZkInput = async (recoveryCode: number) => {
-
 }

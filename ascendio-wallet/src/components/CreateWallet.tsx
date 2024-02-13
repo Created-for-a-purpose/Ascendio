@@ -3,7 +3,7 @@ import '../styles/CreateWallet.css';
 import Wallet from './Wallet';
 const horse = "https://static.displate.com/1200x857/displate/2021-05-19/5b04b27618cb89016642bf525ef89f5f_fbe0de8b9a372a20f0116b5f95905c8a.jpg"
 import { getWalletApi, setContractAddress } from '../AppState';
-import { updateContractState } from '../PaymasterExecution';
+import { updateContractState, getUserRecovery } from '../PaymasterExecution';
 import { generateRecovery } from './Recovery';
 
 function CreateWallet() {
@@ -13,11 +13,12 @@ function CreateWallet() {
     const [created, setCreated] = useState(false);
     const [txHash, setTxHash] = useState('');
     const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     useEffect(() => {
         async function call() {
-            setContractAddress('03efd71802975c05b2bd2b166fe60440bebcd26347');
-            updateContractState();
+            setContractAddress('032c5baac4443ca1168d54667df4e9c82f1828a4e7');
+            updateContractState()
         }
         call()
     }, []);
@@ -28,9 +29,14 @@ function CreateWallet() {
         const password = e.target.elements.password.value
         const recovery = e.target.elements.recovery.value;
         setUsername(username);
+        setPassword(password);
         const api = getWalletApi();
         const response = await api?.createWallet(password, username, recovery)
-        console.log('response', response);
+        if (response === undefined) {
+            console.log('Error creating wallet');
+            return;
+        }
+        setTxHash(response);
         setCreated(true);
         setTimeout(() => {
             setCreateForm(false);
@@ -39,19 +45,41 @@ function CreateWallet() {
 
     const importWallet = async (e: any) => {
         e.preventDefault();
+        const username = e.target.elements.username.value;
+        const password = e.target.elements.password.value
+        setUsername(username);
+        setPassword(password);
         setImportForm(false);
         setCreated(true);
     };
 
     const recoverWallet = async (e: any) => {
         e.preventDefault();
+        const password = e.target.elements.password.value;
+        setPassword(password);
+        const walletApi = getWalletApi();
+        const response = await walletApi?.recover(
+            username,
+            e.target.elements.password.value,
+            e.target.elements.code.value
+        );
+        if (response === undefined) {
+            console.log('Error recovering wallet');
+            return;
+        }
+        setTxHash(response);
         setImportForm(false);
         setRecoveryForm(false);
         setCreated(true);
     }
 
-    const handleForgotPassword = () => {
-        generateRecovery(username, "noah20272@gmail.com");
+    const handleForgotPassword = async () => {
+        const recovery = await getUserRecovery(username);
+        if (recovery === undefined) {
+            console.log('Error getting recovery code');
+            return;
+        }
+        generateRecovery(username, recovery);
         setRecoveryForm(true)
     }
 
@@ -94,14 +122,16 @@ function CreateWallet() {
                     <h1>Wallet created!</h1>
                     <h1>✅</h1>
                     <div className='created-link'>
-                        <a href={`https://browser.testnet.partisiablockchain.com/transactions/${txHash}`} target='_blank'>
-                            Visit explorer</a>
+                        <div
+                            onClick={(e) => { e.stopPropagation(); window.open(`https://browser.testnet.partisiablockchain.com/transactions/${txHash}`, '_blank', 'width=800,height=600') }}>
+                            Visit explorer
+                        </div>
                     </div>
                 </div>
             }
             {
                 created && !createForm &&
-                <Wallet username={username} />
+                <Wallet username={username} password={password} />
             }
             {
                 importForm &&
@@ -126,11 +156,11 @@ function CreateWallet() {
                         <form onSubmit={(e) => recoverWallet(e)}>
                             <div className="form-group">
                                 <label htmlFor="code">Code</label>
-                                <input type="text" id="code" />
+                                <input type="number" id="code" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password">New Password</label>
-                                <input type="text" id="password" />
+                                <input type="password" id="password" />
                             </div>
                             <button type="submit" className="create-button">Recover</button>
                         </form>

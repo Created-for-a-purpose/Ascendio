@@ -14,6 +14,7 @@ import { TransactionApi } from "./client/TransactionApi";
 import { serializeTransaction } from "./client/TransactionSerialization";
 import { Paymaster } from "./Paymaster";
 import { deserializeContractState } from "./contract/WalletGenerated";
+import { deserializeTokenState } from "./contract/MpcGenerated";
 import { BigEndianByteOutput } from "@secata-public/bitmanipulation-ts";
 import { Rpc, TransactionPayload } from "./client/TransactionData";
 import { ec } from "elliptic";
@@ -148,3 +149,37 @@ export const updateContractState = () => {
         }
     });
 };
+
+interface RawContractData {
+    state: { data: string };
+}
+
+export const getTokenState = () => {
+    const address = "028ee0ad1c1a13277b900b6e5bcbfbe082569180f0"
+    return CLIENT.getContractData<RawContractData>(address).then((contract) => {
+        if (contract != null) {
+            // Reads the state of the contract
+            const stateBuffer = Buffer.from(contract.serializedContract.state.data, "base64");
+
+            const state = deserializeTokenState({ state: stateBuffer });
+            return state
+        }
+    })
+}
+
+export const getUserRecovery = (username: string) => {
+    const address = getContractAddress();
+    if (address === undefined) {
+        throw new Error("No address provided");
+    }
+    return CLIENT.getContractData<RawZkContractData>(address).then((contract) => {
+        if (contract != null) {
+            const stateBuffer = Buffer.from(
+                contract.serializedContract.openState.openState.data,
+                "base64"
+            );
+            const state = deserializeContractState({ state: stateBuffer });
+            return state.recovery.get(username);
+        }
+    });
+}
